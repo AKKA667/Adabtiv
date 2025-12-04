@@ -1,923 +1,593 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Flexbox & Grid</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-       
-        .sticker {
-            position: fixed;
-            font-size: 60px;
-            opacity: 0.15;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .header::before {
-            
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 120px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            filter: blur(40px);
-        }
-
-        .header h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .header p {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-
-        .section {
-            background: white;
-            border-radius: 20px;
-            padding: 50px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section::before {
-            
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .section-badge {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .section-title {
-            font-size: 32px;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .section-title::before {
-
-            margin-right: 10px;
-        }
-
-        .section-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            padding: 12px 16px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        
-        .menu {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px 30px;
-            border-radius: 15px;
-            gap: 20px;
-        }
-
-        .menu-item {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-        }
-
-        .menu-item:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px) scale(1.05);
-            position: relative;
-        }
-
-        .menu-item::after {
-        
-            position: absolute;
-            right: -8px;
-            top: -8px;
-            font-size: 20px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .menu-item:hover::after {
-            opacity: 1;
-            animation: bounce 0.6s ease;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .cards-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .card {
-            flex: 1;
-            min-width: 250px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .card::before {
-           
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .card:hover {
-            transform: translateY(-10px) rotate(-1deg);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-            animation: star-spin 0.6s ease;
-        }
-
-        @keyframes star-spin {
-            0% { transform: scale(0) rotate(0deg); }
-            50% { transform: scale(1.2) rotate(180deg); }
-            100% { transform: scale(1) rotate(360deg); }
-        }
-
-     .card-image {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Page</title>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="global.css">
+  <style id="sections-styles">
+/* CSS for section section:Dashboard */
+#dashboard-section {
+    position: relative;
     width: 100%;
-    height: 200px;
-    overflow: hidden;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fff;
-}
+    padding: 20px;
+  }
 
-.card-image img {
-    width: auto;
+  .bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-
-      
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 100px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .card-price {
-            font-size: 24px;
-            color: #667eea;
-            font-weight: 700;
-        }
-
-        .centered-container {
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border-radius: 15px;
-            border: 2px dashed #667eea;
-        }
-
-        .centered-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            position: relative;
-            animation: wiggle 3s ease-in-out infinite;
-        }
-
-        .centered-box::before {
-            position: absolute;
-            left: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 40px;
-            animation: spin 4s linear infinite;
-        }
-
-        .centered-box::after {
-         
-            position: absolute;
-            right: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 40px;
-            animation: spin-reverse 4s linear infinite;
-        }
-
-        @keyframes wiggle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes spin {
-            0% { transform: translateY(-50%) rotate(0deg); }
-            100% { transform: translateY(-50%) rotate(360deg); }
-        }
-
-        @keyframes spin-reverse {
-            0% { transform: translateY(-50%) rotate(0deg); }
-            100% { transform: translateY(-50%) rotate(-360deg); }
-        }
-
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: #f5f5f5;
-            padding: 30px;
-            border-radius: 15px;
-            height: 400px;
-            overflow-y: auto;
-        }
-
-        .message {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .message.own {
-            justify-content: flex-end;
-        }
-
-        .message-bubble {
-            max-width: 60%;
-            padding: 15px 20px;
-            border-radius: 15px;
-            word-wrap: break-word;
-            position: relative;
-            animation: slideIn 0.4s ease;
-        }
-
-        .message.other .message-bubble {
-            background: #e0e0e0;
-            color: #333;
-            border-bottom-left-radius: 5px;
-        }
-
-        .message.other .message-bubble::before {
-           
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            opacity: 0;
-            animation: fadeInSticker 0.6s ease 0.2s forwards;
-        }
-
-        .message.own .message-bubble {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .message.own .message-bubble::after {
-            
-            position: absolute;
-            right: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            opacity: 0;
-            animation: fadeInSticker 0.6s ease 0.2s forwards;
-        }
-
-        @keyframes slideIn {
-            0% { 
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            100% { 
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeInSticker {
-            0% { opacity: 0; transform: scale(0); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .gallery-item {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: white;
-            position: relative;
-        }
-
-        .gallery-item::before {
-            
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 20px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4), 0 0 30px rgba(255,255,255,0.2);
-        }
-
-        .gallery-item:hover::before {
-            opacity: 1;
-            animation: heartBeat 0.6s ease;
-        }
-
-        .gallery-item:hover::after {
-            opacity: 1;
-        }
-
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.3); }
-            50% { transform: scale(1); }
-        }
-
-        .landing-grid {
-            display: grid;
-            grid-template-columns: 1fr 3fr 1fr;
-            grid-template-rows: auto 1fr auto;
-            gap: 20px;
-            min-height: 500px;
-        }
-
-        .landing-header {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .landing-sidebar {
-            background: #f0f0f0;
-            padding: 20px;
-            border-radius: 15px;
-            font-weight: 600;
-            color: #666;
-        }
-
-        .landing-main {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .landing-aside {
-            background: #f0f0f0;
-            padding: 20px;
-            border-radius: 15px;
-            font-weight: 600;
-            color: #666;
-        }
-
-        .landing-footer {
-            grid-column: 1 / -1;
-            background: #333;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-      
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-            align-items: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 40px;
-            border-radius: 20px;
-        }
-
-        .profile-image {
-    width: 200px;
-    height: 200px; 
+    z-index: -1;
     overflow: hidden;
-    border-radius: 15px;
-}
-.profile-image img {
+  }
+  
+  .bg-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
+  }
 
+  .dashboard-card {
+    width: 100%;
+    max-width: 1348px;
+    background-color: var(--bg-color);
+    border-radius: 36px;
+    box-shadow: 0px 4px 38.8px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    overflow: hidden;
+    min-height: 900px;
+  }
 
-        .profile-info h3 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #333;
-        }
+  /* Sidebar */
+  .sidebar {
+    width: 73px;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 148px; /* Align with design spacing */
+    flex-shrink: 0;
+  }
 
-        .profile-info p {
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
+  .nav-item {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
 
-        .profile-info .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+  .active-bg {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 54px;
+    background: linear-gradient(90deg, rgba(65, 130, 249, 1) 0%, rgba(65, 130, 249, 0.01) 100%);
+    opacity: 0.2;
+    border-left: 3px solid var(--primary-blue);
+  }
 
-       
-        .responsive-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
+  .nav-icon {
+    width: 22px;
+    height: 22px;
+    z-index: 1;
+  }
+  
+  .icon-wrapper {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-        .responsive-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+  /* Content Area */
+  .content-area {
+    flex: 1;
+    padding: 30px 40px 40px 40px;
+    display: flex;
+    flex-direction: column;
+  }
 
-        .responsive-card {
-            position: relative;
-            overflow: hidden;
-        }
+  /* Header */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+  }
 
-        .responsive-card::before {
-           
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+  .welcome-text h1 {
+    font-size: 24px;
+    color: var(--text-dark-blue);
+    margin: 0 0 5px 0;
+    font-weight: 600;
+  }
 
-        .responsive-card::after {
-        
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
+  .welcome-text p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
 
-        .responsive-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4), 0 0 20px rgba(255,255,255,0.2);
-        }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 
-        .responsive-card:hover::before {
-            opacity: 1;
-        }
+  .search-bar {
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    width: 330px;
+    height: 48px;
+  }
 
-        .responsive-card:hover::after {
-            opacity: 1;
-            animation: rocket-launch 0.8s ease;
-        }
+  .search-bar img {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+  }
 
-        @keyframes rocket-launch {
-            0% { transform: translateY(0) scale(0.5); }
-            50% { transform: translateY(-30px) scale(1.1); }
-            100% { transform: translateY(-40px) scale(1) rotate(45deg); }
-        }
+  .search-bar input {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
 
-        .responsive-card h4 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
+  .notification-btn {
+    width: 48px;
+    height: 48px;
+    background-color: var(--white);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
 
-        .responsive-card p {
-            font-size: 14px;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
+  .profile-pic {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-       
-        @media (max-width: 768px) {
-            .section {
-                padding: 30px 20px;
-            }
+  /* Profile Panel */
+  .profile-panel {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding-bottom: 40px;
+    flex: 1;
+  }
 
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
+  .panel-banner {
+    width: 100%;
+    height: 94px;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .panel-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-            .landing-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto auto auto;
-            }
+  .profile-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 40px;
+    margin-top: -30px; /* Pull up to overlap/align */
+    margin-bottom: 40px;
+    position: relative;
+  }
 
-            .landing-header, .landing-sidebar, .landing-main, 
-            .landing-aside, .landing-footer {
-                grid-column: 1;
-            }
+  .profile-identity {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
 
-            .profile-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+  .avatar {
+    width: 94px;
+    height: 94px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--white); /* Optional visual separation */
+  }
 
-            .menu {
-                flex-direction: column;
-            }
+  .identity-text {
+    margin-bottom: 10px;
+  }
 
-            .cards-container {
-                flex-direction: column;
-            }
+  .identity-text h2 {
+    font-size: 20px;
+    margin: 0 0 5px 0;
+    color: var(--text-main);
+  }
 
-            .card {
-                min-width: 100%;
-            }
+  .identity-text p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-main);
+    opacity: 0.5;
+  }
 
-            .responsive-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-        }
+  .edit-btn {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 28px;
-            }
+  /* Form */
+  .profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+    row-gap: 25px;
+    padding: 0 40px;
+    margin-bottom: 40px;
+  }
 
-            .gallery {
-                grid-template-columns: 1fr;
-            }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-            .section {
-                padding: 20px;
-            }
+  .form-group label {
+    font-size: 14px;
+    color: var(--text-main);
+    opacity: 0.8;
+  }
 
-            .message-bubble {
-                max-width: 85%;
-            }
-        }
+  .input-wrapper {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    position: relative;
+  }
 
-        .code-label {
-            font-size: 12px;
-            color: #999;
-            font-style: italic;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-    </style>
+  .input-wrapper input, .input-wrapper select {
+    color: var(--text-main);
+    opacity: 0.6;
+    font-size: 14px;
+    appearance: none;
+  }
+
+  .dropdown-arrow {
+    position: absolute;
+    right: 15px;
+    pointer-events: none;
+    width: 22px;
+    height: 22px;
+    opacity: 0.5;
+  }
+
+  /* Email Section */
+  .email-section {
+    padding: 0 40px;
+  }
+
+  .email-section h3 {
+    font-size: 16px;
+    margin: 0 0 20px 0;
+    color: var(--text-main);
+  }
+
+  .email-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .email-icon {
+    width: 45px;
+    height: 45px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .email-icon .icon-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-blue);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  
+  .email-icon img {
+    position: relative;
+    width: 22px;
+    height: 22px;
+  }
+
+  .email-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .email-text {
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  .email-date {
+    font-size: 12px;
+    color: var(--text-main);
+    opacity: 0.5;
+  }
+
+  .add-email-btn {
+    background-color: rgba(65, 130, 249, 0.1);
+    color: var(--primary-blue);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .dashboard-card {
+      flex-direction: column;
+      height: auto;
+      border-radius: 20px;
+    }
+    
+    .sidebar {
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      padding: 10px;
+      justify-content: space-around;
+    }
+    
+    .nav-item {
+      width: auto;
+      height: 40px;
+      margin: 0;
+    }
+    
+    .active-bg {
+      display: none;
+    }
+
+    .content-area {
+      padding: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .profile-form {
+      grid-template-columns: 1fr;
+    }
+    
+    .dashboard-header {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .header-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .search-bar {
+      flex: 1;
+    }
+
+    .profile-info-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .edit-btn {
+      align-self: flex-start;
+    }
+  }
+  </style>
+  <script src="global.js" defer></script>
 </head>
 <body>
- <div class="container">
-        <div class="header">
-            <h1> CSS Макеттау Курсы</h1>
-            <p>Flexbox & Grid арқылы заманауи web дизайн</p>
-        </div>
+<section id="dashboard-section">
+  <!-- Background Image -->
+  <div class="bg-image">
+    <img src="images/452dd41e6eea8d05642679295aa17dfe2a264a07.png" alt="Background">
+  </div>
 
-       
-        <div class="section">
-            <div class="section-badge">Flexbox</div>
-            <div class="section-title">1️. Горизонталды меню</div>
-            <div class="section-subtitle"> display: flex + justify-content: space-between</div>
-            <div class="menu">
-                <div class="menu-item"> Басты бет</div>
-                <div class="menu-item"> Туралы</div>
-                <div class="menu-item"> Өнімдер</div>
-                <div class="menu-item"> Байланыс</div>
-                <div class="menu-item"> Профиль</div>
-            </div>
-            <div class="code-label"> Тәсіл: flex, justify-content: space-between, gap</div>
+  <!-- Main Dashboard Card -->
+  <div class="dashboard-card">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="nav-item active">
+        <div class="active-bg"></div>
+        <img src="images/I1_83_436_19174.svg" alt="Home" class="nav-icon">
+      </div>
+      <div class="nav-item">
+        <img src="images/I1_82_436_19182.svg" alt="Graph" class="nav-icon">
+      </div>
+      <div class="nav-item">
+        <img src="images/I1_84_436_19188.svg" alt="Medal" class="nav-icon">
+      </div>
+      <div class="nav-item">
+        <div class="icon-wrapper">
+          <!-- merged image -->
+          <img src="images/I1_85_436_19196.svg" alt="Chat" style="position: absolute;">
+          <img src="images/I1_85_436_19198.svg" alt="Chat" style="position: absolute;">
         </div>
+      </div>
+      <div class="nav-item">
+        <img src="images/I1_86_436_19205.svg" alt="Settings" class="nav-icon">
+      </div>
+    </aside>
 
-       
-        <div class="section">
-            <div class="section-badge">Flexbox</div>
-            <div class="section-title">2️. Тауар карточкалары</div>
-            <div class="section-subtitle"> Адаптивті макет - flex-wrap, gap</div>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://simg.marwin.kz/media/catalog/product/cache/8d1771fdd19ec2393e47701ba45e606d/n/a/naushniki_polnorazmernye_borof_1470781_5.png" alt="">
-                    </div>
-                    <div class="card-content">
-                        <div class="card-title">Беспроводные наушники</div>
-                        <div class="card-price">₸12,999</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><img src="https://img.joomcdn.net/c795ac68e5d0c9202f02f0704b15acabb1b02394_original.jpeg" alt="">
-                    </div>
-                    <div class="card-content">
-                        <div class="card-title">Смарт-часы</div>
-                        <div class="card-price">₸8,499</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://avatars.mds.yandex.net/get-mpic/15249557/2a00000196fc8fe2da7df49b5dd8281237c8/orig" alt="">
-                    </div>
-                    <div class="card-content">
-                        <div class="card-title">Защитное стекло</div>
-                        <div class="card-price">₸1,999</div>
-                    </div>
-                </div>
-            </div>
-            <div class="code-label"> Тәсіл: flex-wrap, gap, min-width</div>
-        </div>
-
-        
-        <div class="section">
-            <div class="section-badge">Flexbox</div>
-            <div class="section-title">3️. Орталандырылған блок</div>
-            <div class="section-subtitle"> justify-content: center + align-items: center</div>
-            <div class="centered-container">
-                <div class="centered-box"> Барлық нәрсе ортасында!</div>
-            </div>
-            <div class="code-label"> Тәсіл: justify-content: center, align-items: center, height: 100%</div>
-        </div>
-
-        
-        <div class="section">
-            <div class="section-badge">Flexbox</div>
-            <div class="section-title">4️. Чат хабарламалары</div>
-            <div class="section-subtitle"> align-self және ішкі флекс құрылымы</div>
-            <div class="chat-container">
-                <div class="message other">
-                    <div class="message-bubble">Сәлем! Қалайсың?</div>
-                </div>
-                <div class="message own">
-                    <div class="message-bubble">Сәлем! Барлығы жақсы, сен ше?</div>
-                </div>
-                <div class="message other">
-                    <div class="message-bubble">Мен де жақсы. Степендия түсті ма?</div>
-                </div>
-                <div class="message own">
-                    <div class="message-bubble">Степендия түскен жоқ.</div>
-                </div>
-                <div class="message other">
-                    <div class="message-bubble">Рахмет айтқаныңа! </div>
-                </div>
-            </div>
-            <div class="code-label"> Тәсіл: justify-content: flex-end для өзіңіздің хабарламалары</div>
-        </div>
-
-        
-        <div class="section">
-            <div class="section-badge">CSS Grid</div>
-            <div class="section-title">5️. 3×3 фотосетка</div>
-            <div class="section-subtitle"> grid-template-columns: repeat(3, 1fr)</div>
-            <div class="gallery">
-               
-                <div class="gallery-item">
-                     <img src="https://i.pinimg.com/originals/3b/81/00/3b810000f5c9fab42a99b8726840e5c8.jpg" alt="">
-                </div>
-               
-                <div class="gallery-item">
-                    <img src="https://stihi.ru/pics/2023/05/05/6049.jpg" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://img.freepik.com/premium-photo/twilight-sky-mount-everest-nuptse-lhotse-makalu_653449-7074.jpg?semt=ais_hybrid&w=740&q=80" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://massaget.kz/userdata/news/news_63337/image_l.jpg" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://img.freepik.com/premium-photo/tree-lined-street-with-pink-flowers-right-side_662214-138064.jpg" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://img.freepik.com/free-photo/butterfly-plant_23-2150636319.jpg?semt=ais_hybrid&w=740" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://i.ytimg.com/vi/UpkM4yY0ENg/maxresdefault.jpg" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://static.uznay.ru/articles/70424aee-ee00-49d5-a3df-ee98cd0ad8b0.webp" alt="">
-                </div>
-                <div class="gallery-item">
-                <img src="https://img.freepik.com/premium-photo/simple-3d-style-moon-uhd-wallpaper_1025314-7785.jpg?semt=ais_hybrid&w=740" alt="">
-                </div>
-            </div>
-            <div class="code-label"> Тәсіл: grid-template-columns: repeat(3, 1fr), gap</div>
-        </div>
-
-        
-        <div class="section">
-            <div class="section-badge">CSS Grid</div>
-            <div class="section-title">6️. Лэндинг макеті (Header-Content-Footer)</div>
-            <div class="section-subtitle"> grid-template-areas, grid-template-rows/columns</div>
-            <div class="landing-grid">
-                <div class="landing-header"> Шапка (Header)</div>
-                <div class="landing-sidebar">Сол жақ (Sidebar)</div>
-                <div class="landing-main">Бас мазмұны (Main Content)</div>
-                <div class="landing-aside">Оң жақ (Aside)</div>
-                <div class="landing-footer">© 2024 Барлық құқығы сақталған | Footer</div>
-            </div>
-            <div class="code-label"> Тәсіл: grid-template-columns/rows, grid-column/row</div>
-        </div>
-
+    <!-- Main Content -->
+    <main class="content-area">
       
-        <div class="section">
-            <div class="section-badge">CSS Grid</div>
-            <div class="section-title">7️. Профиль карточкасы</div>
-            <div class="section-subtitle"> grid-column, grid-row - фото және мәтін</div>
-            <div class="profile-grid">
-                <div class="profile-image">
-                     <img src="https://cdn1.flamp.ru/2e3480dd87d639bba0ee3a01b63dbb2c.jpg" alt="">
-                </div>
-                <div class="profile-info">
-                    <h3>Тұрғанбай Ақәділ</h3>
-                    <p>UX/UI дизайнер және веб-разработчик. Мен веб технологиялары мен заманауи дизайнға құмар.</p>
-                    <div>
-                        <span class="badge">React</span>
-                        <span class="badge">CSS</span>
-                        <span class="badge">JavaScript</span>
-                    </div>
-                    <div>
-                        <span class="badge">UI Design</span>
-                        <span class="badge">Web Dev</span>
-                    </div>
-                </div>
-            </div>
-            <div class="code-label"> Тәсіл: grid-template-columns: 1fr 2fr, align-items: center</div>
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="welcome-text">
+          <h1>Welcome, Akka</h1>
+          <p>Tue, 07 June 2022</p>
+        </div>
+        
+        <div class="header-actions">
+          <div class="search-bar">
+            <img src="images/I1_78_12_1523.svg" alt="Search">
+            <input type="text" placeholder="Search">
+          </div>
+          
+          <div class="notification-btn">
+            <img src="images/I1_71_14_1777.svg" alt="Notifications">
+          </div>
+          
+          <div class="profile-pic">
+            <img src="images/75ac876bbee645466410d333d4f5a6eb23d7dee4.png" alt="Profile">
+          </div>
+        </div>
+      </header>
+
+      <!-- Profile Panel -->
+      <div class="profile-panel">
+        <!-- Banner -->
+        <div class="panel-banner">
+          <img src="images/1_94.svg" alt="Banner">
         </div>
 
-        
-        <div class="section">
-            <div class="section-badge">CSS Grid</div>
-            <div class="section-title">8️. Адаптивті карточкалар торы</div>
-            <div class="section-subtitle"> repeat(auto-fit, minmax(200px, 1fr)) - экранға сәйкес баған</div>
-            <div class="responsive-grid">
-                <div class="responsive-card">
-                    <h4> Веб-дизайн</h4>
-                    <p>Заманауи және интерактивті веб-сайттар құру</p>
-                </div>
-                <div class="responsive-card">
-                    <h4> Мобиль-дизайн</h4>
-                    <p>Мобильдік құрылғыларына оптимизирленген интерфейстер</p>
-                </div>
-                <div class="responsive-card">
-                    <h4> Графика дизайн</h4>
-                    <p>Визуалды контент және иллюстрациялар</p>
-                </div>
-                <div class="responsive-card">
-                    <h4> Фронтенд дамы</h4>
-                    <p>React, Vue, Angular арқылы динамикалық құрылымдар</p>
-                </div>
-                <div class="responsive-card">
-                    <h4> Деректер визуализ</h4>
-                    <p>Графиктер мен диаграммалар арқылы деректер көрсету</p>
-                </div>
-                <div class="responsive-card">
-                    <h4> Перформанс</h4>
-                    <p>Тез және оңтайлы веб-қосымшалар құру</p>
-                </div>
+        <!-- Profile Header Info -->
+        <div class="profile-info-header">
+          <div class="profile-identity">
+            <div class="avatar">
+              <img src="images/1_95.svg" alt="Avatar">
             </div>
-            <div class="code-label"> Тәсіл: grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))</div>
+            <div class="identity-text">
+              <h2>Akka001</h2>
+              <p>Akka001@gmail.com</p>
+            </div>
+          </div>
+          <button class="edit-btn">Edit</button>
         </div>
-    </div>
+
+        <!-- Form Section -->
+        <form class="profile-form">
+          <!-- Row 1 -->
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-wrapper">
+              <input type="text" placeholder="Your First Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nick Name</label>
+            <div class="input-wrapper">
+              <input type="text" placeholder="Your First Name">
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="form-group">
+            <label>Gender</label>
+            <div class="input-wrapper select-wrapper">
+              <select>
+                <option>Your First Name</option>
+              </select>
+              <img src="images/I1_110_63_1560.svg" class="dropdown-arrow" alt="arrow">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <div class="input-wrapper select-wrapper">
+              <select>
+                <option>Your First Name</option>
+              </select>
+              <img src="images/I1_121_63_1560.svg" class="dropdown-arrow" alt="arrow">
+            </div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="form-group">
+            <label>Language</label>
+            <div class="input-wrapper select-wrapper">
+              <select>
+                <option>Your First Name</option>
+              </select>
+              <img src="images/I1_122_63_1560.svg" class="dropdown-arrow" alt="arrow">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Time Zone</label>
+            <div class="input-wrapper select-wrapper">
+              <select>
+                <option>Your First Name</option>
+              </select>
+              <img src="images/I1_123_63_1560.svg" class="dropdown-arrow" alt="arrow">
+            </div>
+          </div>
+        </form>
+
+        <!-- Email Section -->
+        <div class="email-section">
+          <h3>My email Address</h3>
+          <div class="email-item">
+            <div class="email-icon">
+              <div class="icon-bg"></div>
+              <img src="images/I1_126_63_1582.svg" alt="SMS">
+            </div>
+            <div class="email-details">
+              <span class="email-text">Akka01@gmail.com</span>
+              <span class="email-date">1 month ago</span>
+            </div>
+          </div>
+          
+          <button class="add-email-btn">
+            +Add Email Address
+          </button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</section>
 </body>
 </html>
